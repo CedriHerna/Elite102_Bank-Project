@@ -1,3 +1,9 @@
+import mysql.connector
+
+connection = mysql.connector.connect(user = 'root', database = 'Local instance MySQL80', password = '151769')
+
+connection.close()
+
 # First need to have a introduction of my Banking System.
 
 # Make a log in to the bank and tell the user what
