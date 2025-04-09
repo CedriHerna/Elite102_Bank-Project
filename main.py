@@ -1,6 +1,18 @@
 import mysql.connector
 
-connection = mysql.connector.connect(user = 'root', database = 'Local instance MySQL80', password = '151769')
+connection = mysql.connector.connect(user = 'root', database = 'example', password = 'TsubasaNaru2-/11')
+
+cursor = connection.cursor()
+
+testQuery = ('SELECT * FROM student')
+
+cursor.execute(testQuery)
+
+for item in cursor:
+
+    print(item)
+
+cursor.close()
 
 connection.close()
 
