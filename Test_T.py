@@ -1,5 +1,6 @@
 import tkinter as tk
-
+import main
+ 
 
 
 def button_click():

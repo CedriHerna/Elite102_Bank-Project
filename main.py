@@ -1,26 +1,10 @@
 import mysql.connector
-
+import tkinter as tk
+#                       //// mysql Connection and Cursor \\\\
 connection = mysql.connector.connect(user = 'root', database = 'perico\'s_banking_system', password = 'TsubasaNaru2-/11')
-
 cursor = connection.cursor()
 
-# testQuery = ('SELECT Full_Name FROM list_of_users')
 
-# cursor.execute(testQuery)
-
-# for i, item in enumerate(cursor, start = 1):
-
-#     string = (f'{item}')
-#     remove_chars = "(),'"
-#     translation_table = str.maketrans('', '', remove_chars)
-#     text_filtered = string.translate(translation_table)
-#     print(f'{i}. {text_filtered}')
-
-
-# First need to have a introduction of my Banking System.
-
-# Make a log in to the bank and ask the user what
-# type of access they have.
 
 #                           //// Admin Functions \\\\
 # IF THE USER IS AN ADMIN
