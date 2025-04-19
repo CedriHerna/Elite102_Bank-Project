@@ -55,7 +55,7 @@ choices_for_admin = ["User List", "A user's account details", "Add an account", 
 
 # Functions:
 
-    # List of Users
+# List of Users
 def User_List():
 
     print("\n")
@@ -78,8 +78,8 @@ def User_List():
     # Account details
 
 # Modify
-
 #       NAME | PIN | ADDRESS | SSN
+
 def specific_account_details():
     
     User_List()
@@ -136,6 +136,8 @@ def specific_account_details():
                     newName = input("Please enter the new name you want to give this user.  ")
                     nameQuery = "UPDATE list_of_users SET Full_Name = '" + newName + "' WHERE Full_Name = '" + name + "'"
                     cursor.execute(nameQuery)
+                    connection.commit()
+
                     print("Name Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -149,6 +151,8 @@ def specific_account_details():
                     newAddress = input("Please enter the new address you want to give this user.  ")
                     addressQuery = "UPDATE list_of_users SET Address = '" + newAddress + "' WHERE Address = '" + address + "'"
                     cursor.execute(addressQuery)
+                    connection.commit()
+
                     print("Address Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -162,6 +166,8 @@ def specific_account_details():
                     newPin = input("Please enter the new pin you want to give this user.  ")
                     pinQuery = "UPDATE list_of_users SET Pin = '" + newPin + "' WHERE Pin = '" + pin + "'"
                     cursor.execute(pinQuery)
+                    connection.commit()
+
                     print("Pin Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -175,6 +181,8 @@ def specific_account_details():
                     newSSN = input("Please enter the new SSN you want to give this user.  ")
                     SSNQuery = "UPDATE list_of_users SET SSN = '" + newSSN + "' WHERE SSN = '" + SSN + "'"
                     cursor.execute(SSNQuery)
+                    connection.commit()
+
                     print("Pin Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -208,7 +216,6 @@ def specific_account_details():
 # Add account
 
 def Add_Account():
-    print("Add account coming soon!")
 
     new_account_name = input("What is the name of this new user?")
     new_account_address = input(f"What is {new_account_name}'s address?")
@@ -218,20 +225,40 @@ def Add_Account():
     new_username = input("What will be their username?")
     new_password = input("What will be their password?")
     
-    new_user_query = (f'INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES ({new_account_name}, {new_account_address}, {new_account_pin}, {new_account_SSN})')
-    cursor.execute(new_user_query)
-    new_login_query = (f'INSERT INTO login (Login_Type, Username, Password, Full_Name) VALUES (User, {new_username}, {new_password}, {new_account_name})')
-    cursor.execute(new_login_query)
-
-
-
-
-
+    # print('INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES (\''+ new_account_name + '\', \'' + new_account_address + '\', \'' + new_account_pin +'\', \'' + new_account_SSN + '\')')
     
+    new_user_query = ('INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES (\''+ new_account_name + '\', \'' + new_account_address + '\', \'' + new_account_pin +'\', \'' + new_account_SSN + '\')')
+    cursor.execute(new_user_query)
+    connection.commit()
+
+    new_login_query = ('INSERT INTO login (Login_Type, Username, Password, Full_Name) VALUES (\'User\', \'' + new_username + '\', \'' + new_password + '\', \'' + new_account_name + '\')')
+    cursor.execute(new_login_query)
+    connection.commit()
+
+    print(f"User {new_account_name} successfully added!")
+
 # Delete accounts
 
 def Remove_Account():    
-    print("Remove account coming soon!")
+    # print("Remove account coming soon!")
+    User_List()
+
+    removed_user_name = input("Which user would you like to remove?")
+
+    delete_login_query = (f"DELETE FROM login WHERE Full_Name = '{removed_user_name}'")
+    cursor.execute(delete_login_query)
+    connection.commit()
+
+    delete_user_query = (f"DELETE FROM list_of_users WHERE Full_Name = '{removed_user_name}'")
+    cursor.execute(delete_user_query)
+    connection.commit()
+
+    print(f"User {removed_user_name} successfully removed!")
+
+
+
+
+
 
 
 #                            //// User Functions \\\\
@@ -253,13 +280,6 @@ def Login():
     print("Please enter your username and password")
     username = input("Username: ")
     password = input("Password: ")
-
-
-
-
-
-
-
 
 def Main_Page():
     
