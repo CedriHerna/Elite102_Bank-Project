@@ -17,15 +17,6 @@ cursor = connection.cursor()
 #     print(f'{i}. {text_filtered}')
 
 
-
-
-
-
-
-    
-
-
-
 # //// Admin Keys \\\\
 # AdminUsername = "AdminUser"
 # AdminPassword = "AdminPass"
@@ -217,13 +208,13 @@ def specific_account_details():
 
 def Add_Account():
 
-    new_account_name = input("What is the name of this new user?")
-    new_account_address = input(f"What is {new_account_name}'s address?")
-    new_account_pin = input(f"What will {new_account_name}'s pin code be?")
-    new_account_SSN = input(f"What is {new_account_name}'s Social Security Number?")
+    new_account_name = input("What is the name of this new user?   ")
+    new_account_address = input(f"What is {new_account_name}'s address?   ")
+    new_account_pin = input(f"What will {new_account_name}'s pin code be?   ")
+    new_account_SSN = input(f"What is {new_account_name}'s Social Security Number?   ")
     
-    new_username = input("What will be their username?")
-    new_password = input("What will be their password?")
+    new_username = input("What will be their username?   ")
+    new_password = input("What will be their password?   ")
     
     # print('INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES (\''+ new_account_name + '\', \'' + new_account_address + '\', \'' + new_account_pin +'\', \'' + new_account_SSN + '\')')
     
@@ -243,7 +234,7 @@ def Remove_Account():
     # print("Remove account coming soon!")
     User_List()
 
-    removed_user_name = input("Which user would you like to remove?")
+    removed_user_name = input("Which user would you like to remove?   ")
 
     delete_login_query = (f"DELETE FROM login WHERE Full_Name = '{removed_user_name}'")
     cursor.execute(delete_login_query)
@@ -254,12 +245,6 @@ def Remove_Account():
     connection.commit()
 
     print(f"User {removed_user_name} successfully removed!")
-
-
-
-
-
-
 
 #                            //// User Functions \\\\
 
