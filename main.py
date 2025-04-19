@@ -17,34 +17,16 @@ cursor = connection.cursor()
 #     print(f'{i}. {text_filtered}')
 
 
-# //// Admin Keys \\\\
-# AdminUsername = "AdminUser"
-# AdminPassword = "AdminPass"
-
-# # //// Normal User Keys \\\\
-# UserUsermane = "UserUser"
-# UserPassword = "UserPass"
-
-
-
-
 # First need to have a introduction of my Banking System.
 
 # Make a log in to the bank and ask the user what
 # type of access they have.
 
-
-
-choices_for_admin = ["User List", "A user's account details", "Add an account", "Remove an account", "Quit"]
-
-
-
-
-
 #                           //// Admin Functions \\\\
 # IF THE USER IS AN ADMIN
-
 # Functions:
+
+choices_for_admin = ["User List", "A user's account details", "Add an account", "Remove an account", "Quit"]
 
 # List of Users
 def User_List():
@@ -248,6 +230,24 @@ def Remove_Account():
 
 #                            //// User Functions \\\\
 
+# IF THE USER IS NOT AN ADMIN
+# Functions:
+
+
+# Manage account: 
+
+#       Check Balance
+
+#       Deposit
+
+#       Withdraw
+
+#       Account Transations
+
+# Create New Account
+
+# Delete account
+
 #                           //// Shared Functions \\\\
 
 def Login():
@@ -263,8 +263,38 @@ def Login():
         login_type = input("Try again.").upper() 
 
     print("Please enter your username and password")
+
     username = input("Username: ")
     password = input("Password: ")
+    usernamePassword = f"('{username}', '{password}')"
+
+    goodLogin = False
+    
+    while(goodLogin == False):
+
+            if(login_type == "A"):
+                admin_logins_query = ("SELECT Username, Password FROM login WHERE Login_Type = 'Admin'")
+                cursor.execute(admin_logins_query)
+            else:
+                user_logins_query = ("SELECT Username, Password FROM login WHERE Login_Type = 'User'")
+                cursor.execute(user_logins_query)
+
+            for logins in cursor:
+
+                stringLogins = f'{logins}'            
+                if(usernamePassword == stringLogins):
+                    goodLogin = True
+                    cursor.fetchall()
+                    break
+            
+            if(goodLogin):
+                break
+            
+            print("Please enter your username and password again.")
+
+            username = input("Username: ")
+            password = input("Password: ")
+            usernamePassword = f"('{username}', '{password}')"
 
 def Main_Page():
     
@@ -320,23 +350,7 @@ def Main_Page():
         print("UserSttufff")
 
 
-# IF THE USER IS NOT AN ADMIN
-# Functions:
 
-
-#   Manage account: 
-
-#       Check Balance
-
-#       Deposit
-
-#       Withdraw
-
-#       Account Transations
-
-#   Create New Account
-
-#   Delete account
 
 
 #                   //// Function call list \\\\
