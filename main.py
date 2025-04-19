@@ -1,5 +1,4 @@
 import mysql.connector
-import tkinter as tk
 #                       //// mysql Connection and Cursor \\\\
 connection = mysql.connector.connect(user = 'root', database = 'perico\'s_banking_system', password = 'TsubasaNaru2-/11')
 cursor = connection.cursor()
