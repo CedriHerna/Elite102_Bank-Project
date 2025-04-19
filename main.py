@@ -214,6 +214,15 @@ def Add_Account():
     new_account_address = input(f"What is {new_account_name}'s address?")
     new_account_pin = input(f"What will {new_account_name}'s pin code be?")
     new_account_SSN = input(f"What is {new_account_name}'s Social Security Number?")
+    
+    new_username = input("What will be their username?")
+    new_password = input("What will be their password?")
+    
+    new_user_query = (f'INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES ({new_account_name}, {new_account_address}, {new_account_pin}, {new_account_SSN})')
+    cursor.execute(new_user_query)
+    new_login_query = (f'INSERT INTO login (Login_Type, Username, Password, Full_Name) VALUES (User, {new_username}, {new_password}, {new_account_name})')
+    cursor.execute(new_login_query)
+
 
 
 
@@ -244,6 +253,10 @@ def Login():
     print("Please enter your username and password")
     username = input("Username: ")
     password = input("Password: ")
+
+
+
+
 
 
 
@@ -296,7 +309,7 @@ def Main_Page():
                 choice = input("")
 
             double_return = False
-            
+
     elif(login_type == 'U'):
 
         print("UserSttufff")
