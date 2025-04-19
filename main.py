@@ -230,29 +230,85 @@ def Remove_Account():
 
 #                            //// User Functions \\\\
 
+choices_for_user = ["Manage Account", "Quit"]
+
 # IF THE USER IS NOT AN ADMIN
 # Functions:
 
-
 # Manage account: 
+def Manage_Account():
+    
+    quit = True
+    choices = ["Check Balance", "Deposit", "Withdraw", "Quit"]
 
-#       Check Balance
+    balance_query = (f"SELECT Balance FROM list_of_users WHERE Full_Name = '{Full_Name}'")
+    cursor.execute(balance_query)
+    for balance in cursor:
+        balance = f'{balance}'
+        remove_chars = "()',"
+        translation_table = str.maketrans('', '', remove_chars)
+        balance = balance.translate(translation_table)
 
-#       Deposit
+    while(True):
 
-#       Withdraw
+        print("Type in the number of the option you would like to select.")
+        for i, choice in enumerate(choices, start = 1):
+            print(f"{i}. {choice}")
+        choice = input("")
 
-#       Account Transations
+        while(choice not in ('1', '2', '3', '4')):
+            choice = input("Try again.")
 
-# Create New Account
+    #       Check Balance
+        if(choice == '1'):
 
-# Delete account
+            print(f"Your balance currently is: ${balance}")
+        elif(choice == '2'):
 
+            deposit = input("How much are you depositing?   ")
+            while(True):
+                try:
+                    deposit = float(deposit)
+                    break
+                except:
+                    deposit = input("Please enter a number   ")
+            
+            balance = float(balance) + deposit
+            deposit_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
+            cursor.execute(deposit_query)
+            connection.commit()
+            print("Deposit complete!")
+
+        elif(choice == '3'):
+
+            withdraw = input('How much are you withdrawing?   ')
+            while(True):
+                try:
+                    withdraw = float(withdraw)
+                    break
+                except:
+                    withdraw = input("Please enter a number   ")
+
+            if(float(balance) < withdraw):
+                print(f'You do not have enough money in the account to withdraw that quantity. Current Balance: ${float(balance)}')
+
+            else:
+                balance = float(balance) - float(withdraw)
+                withdraw_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
+                cursor.execute(withdraw_query)
+                connection.commit()
+                print("Withdraw Complete!")
+            
+        elif(choice == '4'):
+            cursor.fetchall()
+            break
 #                           //// Shared Functions \\\\
 
 def Login():
 
     global login_type
+    global Full_Name
+    
 
     print("Welcome to Perico's Banking System")
 
@@ -266,24 +322,30 @@ def Login():
 
     username = input("Username: ")
     password = input("Password: ")
-    usernamePassword = f"('{username}', '{password}')"
+    
 
     goodLogin = False
     
     while(goodLogin == False):
 
             if(login_type == "A"):
-                admin_logins_query = ("SELECT Username, Password FROM login WHERE Login_Type = 'Admin'")
+                admin_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'Admin'")
                 cursor.execute(admin_logins_query)
             else:
-                user_logins_query = ("SELECT Username, Password FROM login WHERE Login_Type = 'User'")
+                user_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'User'")
                 cursor.execute(user_logins_query)
 
             for logins in cursor:
 
-                stringLogins = f'{logins}'            
-                if(usernamePassword == stringLogins):
+                stringLogins = (f'{logins}')
+                remove_chars = "()'"
+                translation_table = str.maketrans('', '', remove_chars)
+                text_filtered = stringLogins.translate(translation_table)
+                array_of_details = text_filtered.split(", ")
+
+                if(array_of_details[0] == username and array_of_details[1] == password):
                     goodLogin = True
+                    Full_Name = f"{array_of_details[2]}"
                     cursor.fetchall()
                     break
             
@@ -305,8 +367,9 @@ def Main_Page():
     counter = 0
     double_return = False
     print("\n")
-
+    
     if(login_type == 'A'):
+
         if(counter == 0):
             print("Welcome Admin. Please type in the number of the option you would like to select.")
             counter += 1
@@ -347,13 +410,39 @@ def Main_Page():
 
     elif(login_type == 'U'):
 
-        print("UserSttufff")
+        if(counter == 0):
+            print("Welcome User. Please type in the number of the option you would like to select.")
+            counter += 1
+        else:
+            print("Please type in the number of the option you would like to select.")
 
+        for i, choice in enumerate(choices_for_user, start = 1):
+            print(f"{i}. {choice}")
 
+        choice = input("")
+      
+        while(True):
+            
+            if(choice == "1"):
+                Manage_Account()
+            elif(choice == "2"):
+                break
+            else:
+                choice = input("Please try again.   ")
 
+            if(double_return == False):
 
+                print("Please type in the number of the option you would like to select.")
+                for i, choice in enumerate(choices_for_user, start = 1):
+                    print(f"{i}. {choice}")
+                
+                choice = input("")
 
-#                   //// Function call list \\\\
+            double_return = False
+
+        
+
+#                          //// Function call list \\\\
 
 Login()
 Main_Page()
