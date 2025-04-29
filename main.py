@@ -226,10 +226,10 @@ choices_for_user = ["Manage Account", "Quit"]
 # Manage account: 
 def Manage_Account():
     
-    quit = True
+    global balances
     choices = ["Check Balance", "Deposit", "Withdraw", "Quit"]
-    final_balance = None
-
+    
+    
     balance_query = (f"SELECT Balance FROM list_of_users WHERE Full_Name = '{Full_Name}'")
     cursor.execute(balance_query)
     for balance in cursor:
@@ -237,9 +237,8 @@ def Manage_Account():
         remove_chars = "()',"
         translation_table = str.maketrans('', '', remove_chars)
         balance = balance.translate(translation_table)
-        final_balance = balance
-        breakpoint()
-        print(final_balance)
+        balances = balance
+        
     
 
     while(True):
@@ -255,7 +254,7 @@ def Manage_Account():
     #       Check Balance
         if(choice == '1'):
             breakpoint()
-            print(f"Your balance currently is: ${final_balance}")
+            print(f"Your balance currently is: ${balances}")
             
         elif(choice == '2'):
 
