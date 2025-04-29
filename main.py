@@ -89,7 +89,7 @@ def specific_account_details():
             while(option not in ('1', '2', '3', '4')):
                 option = input("Please try again.")
 
-            breakpoint()
+            
             while(True):
 
                 if(option == '1'):
@@ -106,7 +106,7 @@ def specific_account_details():
                     
                     if(option == 'N'):
                         return Main_Page()
-                     
+                    
                 elif(option == '2'):
 
                     newAddress = input("Please enter the new address you want to give this user.  ")
@@ -223,25 +223,42 @@ choices_for_user = ["Manage Account", "Quit"]
 # IF THE USER IS NOT AN ADMIN
 # Functions:
 
+# Choice Functions which allow me to unit test.
+def deposits(deposit, balance, Full_Name): 
+    
+    while(True):
+        try:
+            deposit = float(deposit)
+        except:
+            deposit = input("Please enter a number   ")
+        
+        balance = float(balance) + deposit
+        if(Full_Name != 'j'):
+            deposit_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
+            cursor.execute(deposit_query)
+            connection.commit()
+            print("Deposit complete!")
+        return balance
+
+def printBalance(balance):
+    return f"Your balance currently is: ${balance}"
+    
+
 # Manage account: 
 def Manage_Account():
-    
-    global balances
+    global balance
     choices = ["Check Balance", "Deposit", "Withdraw", "Quit"]
-    
     
     balance_query = (f"SELECT Balance FROM list_of_users WHERE Full_Name = '{Full_Name}'")
     cursor.execute(balance_query)
-    for balance in cursor:
-        balance = f'{balance}'
-        remove_chars = "()',"
-        translation_table = str.maketrans('', '', remove_chars)
-        balance = balance.translate(translation_table)
-        balances = balance
-        
     
-
     while(True):
+
+        for balance in cursor:
+            balance = f'{balance}'
+            remove_chars = "()',"
+            translation_table = str.maketrans('', '', remove_chars)
+            balance = balance.translate(translation_table)
 
         print("Type in the number of the option you would like to select.")
         for i, choice in enumerate(choices, start = 1):
@@ -253,24 +270,13 @@ def Manage_Account():
 
     #       Check Balance
         if(choice == '1'):
-            breakpoint()
-            print(f"Your balance currently is: ${balances}")
+            print(printBalance(balance))
+            
             
         elif(choice == '2'):
 
             deposit = input("How much are you depositing?   ")
-            while(True):
-                try:
-                    deposit = float(deposit)
-                    break
-                except:
-                    deposit = input("Please enter a number   ")
-            
-            balance = float(balance) + deposit
-            deposit_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
-            cursor.execute(deposit_query)
-            connection.commit()
-            print("Deposit complete!")
+            deposits(deposit, balance, Full_Name)                        #I added Full_Name so that my unit tests could work
 
         elif(choice == '3'):
 
@@ -413,7 +419,7 @@ def Main_Page():
             print(f"{i}. {choice}")
 
         choice = input("")
-      
+    
         while(True):
             
             if(choice == "1"):
@@ -433,7 +439,11 @@ def Main_Page():
 
             double_return = False
 
-        
+
+
+
+
+
 
 #                          //// Function call list \\\\
 
