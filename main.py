@@ -233,12 +233,12 @@ def deposits(deposit, balance, Full_Name):
             deposit = input("Please enter a number   ")
         
         balance = float(balance) + deposit
-        if(Full_Name != 'j'):
+        if(Full_Name != 'j'):   #This is the Full_Name of the unit test
             deposit_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
             cursor.execute(deposit_query)
             connection.commit()
             print("Deposit complete!")
-        return balance
+        return balance  #This is just for the unit test to analyze
 
 def printBalance(balance):
     return f"Your balance currently is: ${balance}"
@@ -271,12 +271,12 @@ def Manage_Account():
     #       Check Balance
         if(choice == '1'):
             print(printBalance(balance))
-            
-            
+             
         elif(choice == '2'):
 
             deposit = input("How much are you depositing?   ")
-            deposits(deposit, balance, Full_Name)                        #I added Full_Name so that my unit tests could work
+            deposits(deposit, balance, Full_Name)                        #I added Full_Name so that my unit tests could work. However, for some reason by making this a function it doesn't update balance until you quit and then return.
+                                                                         #if I just dropped the function here, it would update instantly.
 
         elif(choice == '3'):
 
