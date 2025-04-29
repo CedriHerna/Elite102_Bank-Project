@@ -1,24 +1,5 @@
 import mysql.connector
-import tkinter as tk
 
-#                           //// Tkinter functions \\\\
-# root = tk.Tk()
-# root.title("Perico's Banking System")
-
-# title_label = tk.Label(root, text="Login")
-# username_Label = tk.Label(root, text="Username")
-# username_entry = tk.Entry(root)
-# password_Label = tk.Label(root, text="Password")
-# password_entry = tk.Entry(root, show="*")
-# login_button = tk.Button(root, text="Login")
-
-# title_label.grid(row=0,column=0, columnspan=2)
-
-# username_Label.grid(row=2,column=0)
-# username_entry.grid(row=2,column=1)
-# password_Label.grid(row=3,column=0)
-# password_entry.grid(row=3,column=1)
-# login_button.grid(row=3,column=0, columnspan=2)
 
 
 
@@ -247,6 +228,7 @@ def Manage_Account():
     
     quit = True
     choices = ["Check Balance", "Deposit", "Withdraw", "Quit"]
+    final_balance = None
 
     balance_query = (f"SELECT Balance FROM list_of_users WHERE Full_Name = '{Full_Name}'")
     cursor.execute(balance_query)
@@ -255,6 +237,10 @@ def Manage_Account():
         remove_chars = "()',"
         translation_table = str.maketrans('', '', remove_chars)
         balance = balance.translate(translation_table)
+        final_balance = balance
+        breakpoint()
+        print(final_balance)
+    
 
     while(True):
 
@@ -268,8 +254,9 @@ def Manage_Account():
 
     #       Check Balance
         if(choice == '1'):
-
-            print(f"Your balance currently is: ${balance}")
+            breakpoint()
+            print(f"Your balance currently is: ${final_balance}")
+            
         elif(choice == '2'):
 
             deposit = input("How much are you depositing?   ")
@@ -456,4 +443,3 @@ Main_Page()
 cursor.close()
 connection.close()
 print("Thank you for choosing us. Have a great day!")
-# root.mainloop()
