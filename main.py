@@ -5,8 +5,8 @@ import mysql.connector
 
 
 #                       //// mysql Connection and Cursor \\\\
-connection = mysql.connector.connect(user = 'root', database = 'perico\'s_banking_system', password = 'TsubasaNaru2-/11')
-cursor = connection.cursor()
+connection = mysql.connector.connect(user = 'root', database = 'perico\'s_banking_system', password = 'TsubasaNaru2-/11')  #This enables VSCode to access an SQL database.
+cursor = connection.cursor()                                                                                               #This cursor allows the program to pull specific data out of the SQL database. 
 
 
 
@@ -15,6 +15,7 @@ cursor = connection.cursor()
 # Functions:
 
 choices_for_admin = ["User List", "A user's account details", "Add an account", "Remove an account", "Quit"]
+# This is an array that holds all the choices an admin can select.
 
 # List of Users
 def User_List():
@@ -24,7 +25,7 @@ def User_List():
     listOfUsers = ('SELECT Full_Name FROM list_of_users')
 
     cursor.execute(listOfUsers)
-    
+    # collects data for the for loop to extract.
     print("All users:")
     for item in cursor:
         
@@ -32,7 +33,7 @@ def User_List():
         remove_chars = "(),'"
         translation_table = str.maketrans('', '', remove_chars)
         text_filtered = string.translate(translation_table)
-        print(f'{text_filtered}')
+        print(f'{text_filtered}')                               #This for loop prints out all the users.
     
     print("\n")
 
@@ -47,10 +48,10 @@ def specific_account_details():
     name = input("Who's account information would you like to look at?  ")
     
     account_details = "SELECT * FROM list_of_users WHERE Full_Name = '" + name + "'"
-    # print(account_details)
+    
     cursor.execute(account_details)
 
-    # Pull out the query's results
+    # Pull out the query's results, which holds all the specific details of a specific user.
     while(True):
 
         try:
@@ -61,9 +62,10 @@ def specific_account_details():
                 translation_table = str.maketrans('', '', remove_chars)
                 text_filtered = string.translate(translation_table)
                 array_of_details = text_filtered.split(", ")
+                # This places all of the full name, address, SSN, and pin information of a specific person in an array
 
             counter = 0
-            for detail in array_of_details:
+            for detail in array_of_details:   #This pulls the user's address, pin, and SSN for later use as well as displaying them.
                 if(counter == 0):
                     print(f'Full name: {detail}')
                 elif(counter == 1):
@@ -98,7 +100,7 @@ def specific_account_details():
                     nameQuery = "UPDATE list_of_users SET Full_Name = '" + newName + "' WHERE Full_Name = '" + name + "'"
                     cursor.execute(nameQuery)
                     connection.commit()
-
+                    # Above updates the name within SQL
                     print("Name Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -113,7 +115,7 @@ def specific_account_details():
                     addressQuery = "UPDATE list_of_users SET Address = '" + newAddress + "' WHERE Address = '" + address + "'"
                     cursor.execute(addressQuery)
                     connection.commit()
-
+                    # Above updates the address within SQL
                     print("Address Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -128,7 +130,7 @@ def specific_account_details():
                     pinQuery = "UPDATE list_of_users SET Pin = '" + newPin + "' WHERE Pin = '" + pin + "'"
                     cursor.execute(pinQuery)
                     connection.commit()
-
+                    # Above updates the pin within SQL
                     print("Pin Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -143,7 +145,7 @@ def specific_account_details():
                     SSNQuery = "UPDATE list_of_users SET SSN = '" + newSSN + "' WHERE SSN = '" + SSN + "'"
                     cursor.execute(SSNQuery)
                     connection.commit()
-
+                    # Above updates the SSN within SQL
                     print("Pin Updated!")
                     option = input("Would you like to modify something else? Yes (Y) or No (N)?").upper()
                     while(option not in ('Y', 'N')):
@@ -160,11 +162,9 @@ def specific_account_details():
 
             name = input("Please try again or press q to quit:  ")
             if(name == 'q'):
-                break
+                return Main_Page()
             
-            account_details = "SELECT * FROM list_of_users WHERE Full_Name = '" + name + "'"
-            # print(account_details)
-            cursor.execute(account_details)
+            
     
     # Modify
 
@@ -185,9 +185,7 @@ def Add_Account():
     
     new_username = input("What will be their username?   ")
     new_password = input("What will be their password?   ")
-    
-    # print('INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES (\''+ new_account_name + '\', \'' + new_account_address + '\', \'' + new_account_pin +'\', \'' + new_account_SSN + '\')')
-    
+        
     new_user_query = ('INSERT INTO list_of_users (Full_Name, Address, Pin, SSN) VALUES (\''+ new_account_name + '\', \'' + new_account_address + '\', \'' + new_account_pin +'\', \'' + new_account_SSN + '\')')
     cursor.execute(new_user_query)
     connection.commit()
@@ -201,7 +199,7 @@ def Add_Account():
 # Delete accounts
 
 def Remove_Account():    
-    # print("Remove account coming soon!")
+
     User_List()
 
     removed_user_name = input("Which user would you like to remove?   ")
@@ -233,7 +231,7 @@ def deposits(deposit, balance, Full_Name):
             deposit = input("Please enter a number   ")
         
         balance = float(balance) + deposit
-        if(Full_Name != 'j'):   #This is the Full_Name of the unit test
+        if(Full_Name != 'j'):   #'j' is the Full_Name of the unit test
             deposit_query = (f"UPDATE list_of_users SET Balance = '{balance}' WHERE Full_Name = '{Full_Name}'")
             cursor.execute(deposit_query)
             connection.commit()
@@ -270,7 +268,7 @@ def Manage_Account():
 
     #       Check Balance
         if(choice == '1'):
-            print(printBalance(balance))
+            print(printBalance(balance))    #This calls a specific function and prints what it returns to show the user their balance
              
         elif(choice == '2'):
 
@@ -328,10 +326,10 @@ def Login():
     while(goodLogin == False):
 
             if(login_type == "A"):
-                admin_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'Admin'")
+                admin_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'Admin'")  #Finds admin logins
                 cursor.execute(admin_logins_query)
             else:
-                user_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'User'")
+                user_logins_query = ("SELECT Username, Password, Full_name FROM login WHERE Login_Type = 'User'")    #Finds user logins
                 cursor.execute(user_logins_query)
 
             for logins in cursor:
@@ -340,28 +338,28 @@ def Login():
                 remove_chars = "()'"
                 translation_table = str.maketrans('', '', remove_chars)
                 text_filtered = stringLogins.translate(translation_table)
-                array_of_details = text_filtered.split(", ")
+                array_of_details = text_filtered.split(", ")                    #This splits up the username and password of the specific user on this iteration
 
-                if(array_of_details[0] == username and array_of_details[1] == password):
+                if(array_of_details[0] == username and array_of_details[1] == password):  #if it finds the right username and password, break out of the loop.
                     goodLogin = True
                     Full_Name = f"{array_of_details[2]}"
-                    cursor.fetchall()
+                    cursor.fetchall()                                               #This is here to empty the cursor so that the program can call the cursor again.
                     break
             
             if(goodLogin):
-                break
+                break                                                                  #Breaks out the while loop if it finds the correct username/password OR asks for the user to enter their username/password again.
             
             print("Please enter your username and password again.")
 
             username = input("Username: ")
             password = input("Password: ")
-            usernamePassword = f"('{username}', '{password}')"
+            
 
 def Main_Page():
     
     global counter
     global choice
-    global double_return
+    global double_return    #These are variables that must have a global scope as they are used in multiple parts of the program.
 
     counter = 0
     double_return = False
@@ -371,7 +369,7 @@ def Main_Page():
 
         if(counter == 0):
             print("Welcome Admin. Please type in the number of the option you would like to select.")
-            counter += 1
+            counter += 1    #Makes sure I don't say welcome more than once.
         else:
             print("Please type in the number of the option you would like to select.")
 
@@ -382,7 +380,7 @@ def Main_Page():
         
 
         while(True):
-            
+            # Pushes the user/admin to their respective choice.
             if(choice == "1"):
                 User_List()
             elif(choice == "2"):
@@ -405,7 +403,7 @@ def Main_Page():
                 
                 choice = input("")
 
-            double_return = False
+            double_return = False   #Ensures that it doesn't ask to quit twice on the same page.
 
     elif(login_type == 'U'):
 
@@ -437,7 +435,7 @@ def Main_Page():
                 
                 choice = input("")
 
-            double_return = False
+            double_return = False  #Ensures that it doesn't ask to quit twice on the same page.
 
 
 
